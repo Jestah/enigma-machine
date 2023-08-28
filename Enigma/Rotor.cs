@@ -2,9 +2,9 @@ namespace Enigma;
 
 public class Rotor : EncryptionDisc, IRotor
 {
-    public int RotorPosition { get; set; } = 0;
+    public int RotorPosition { get; set; }
 
-    public char[] TurnoverChars { get; set; } = new char[] { 'Z' };
+    public char[] TurnoverChars { get; set; } = { 'Z' };
 
     public Rotor(List<Tuple<char,char>> mapping) : base(mapping){}
     
