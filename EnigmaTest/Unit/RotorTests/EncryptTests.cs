@@ -6,19 +6,24 @@ public class EncryptTests
 {
     private static readonly Rotor Rotor = EncryptionDiscFactory.CreateRotorOneEncryptionDisc();
     private static readonly Dictionary<char, char>.KeyCollection? RotorDomain = Rotor.EncryptionMapping.Keys;
-
-    // public EncryptTests()
-    // {
-    //     _rotorDomain ;
-    // }
+    
     
     [Theory]
     [MemberData(nameof(GetRotorDomain))]
-    public void encrypt_resultInMappingDomain(char inputChar)
+    public void encryptUpper_resultInUpperMappingDomain(char inputChar)
     {
         if (RotorDomain == null) Assert.Fail("Rotor domain is null.");
         var encrypted = Rotor.Encrypt(inputChar);
         Assert.Contains(encrypted, RotorDomain);
+    }
+    
+    [Theory]
+    [MemberData(nameof(GetRotorDomainLower))]
+    public void encryptLower_resultInLowerMappingDomain(char inputChar)
+    {
+        if (RotorDomain == null) Assert.Fail("Rotor domain is null.");
+        var encrypted = Rotor.Encrypt(inputChar);
+        Assert.Contains(encrypted, RotorDomain.Select(char.ToLower));
     }
     
     public static IEnumerable<object[]> GetRotorDomain()
@@ -26,6 +31,13 @@ public class EncryptTests
         foreach (var key in RotorDomain)
         {
             yield return new object[] { key };
+        }
+    }
+    public static IEnumerable<object[]> GetRotorDomainLower()
+    {
+        foreach (var key in RotorDomain)
+        {
+            yield return new object[] { char.ToLower(key) };
         }
     }
 }

@@ -2,7 +2,7 @@ namespace Enigma;
 
 public class Rotor : EncryptionDisc, IRotor
 {
-    public int RotorPosition { get; set; } = 'A';
+    public int RotorPosition { get; set; } = 'A' - 'A';
 
     public int[] TurnoverPositions { get; set; } = new int[] { 'Z' };
 
@@ -22,16 +22,19 @@ public class Rotor : EncryptionDisc, IRotor
     {
         if (turnAmount <= 0) throw new ArgumentOutOfRangeException(nameof(turnAmount));
         
+        this.RotorPosition = (this.RotorPosition + turnAmount) % this.DiscSize;
+
+        if (RotorPosition > 'Z') RotorPosition -= 'A';
     }
 
     public override char Encrypt(char inputChar)
     {
-        return (char)(base.Encrypt(inputChar) + GetRotorOffset());
+        return (char)(base.Encrypt((char)(inputChar + GetRotorOffset())));
     }
 
     public override char Decrypt(char inputChar)
     {
-        return (char)(base.Decrypt(inputChar) + GetRotorOffset());
+        return (char)(base.Decrypt((char)(inputChar + GetRotorOffset())));
     }
 
     public bool IsNotchAligned()

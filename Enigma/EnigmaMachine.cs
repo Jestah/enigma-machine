@@ -30,19 +30,25 @@ public class EnigmaMachine
 
     public char Encrypt(char inputChar)
     {
-        var charOut = inputChar;
+        Increment();
         
+        var charOut = inputChar;
+
         charOut = _etw.Encrypt(charOut);
 
-        charOut = _rotors.Aggregate(charOut, (current, rotor) => rotor!.Encrypt(current));
+        for (var i = _rotors.GetUpperBound(0); i >= 0; i--)
+        {
+            charOut = _rotors[i].Encrypt(charOut);
+        }
 
         charOut = _ukw.Encrypt(charOut);
 
-        charOut = _rotors.Reverse().Aggregate(charOut, (current, rotor) => rotor!.Decrypt(current));
-        
+        for (var i = 0; i <= _rotors.GetUpperBound(0); i++)
+        {
+            charOut = _rotors[i].Decrypt(charOut);
+        }
+
         charOut = _etw.Decrypt(charOut);
-        
-        Increment();
 
         return charOut;
     }
@@ -51,7 +57,7 @@ public class EnigmaMachine
     {
         var rotorHasTurned = new bool[_rotors.Length];
 
-        for (var rotorIndex = _rotors.Length - 1; rotorIndex >= 0; rotorIndex--)
+        for (var rotorIndex = _rotors.GetUpperBound(0); rotorIndex >= 0; rotorIndex--)
         {
             var isFirstRotor = rotorIndex == _rotors.GetUpperBound(0);
             var currentRotor = _rotors[rotorIndex];
@@ -76,6 +82,5 @@ public class EnigmaMachine
                 }
             }
         }
-
     }
 }
