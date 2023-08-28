@@ -20,16 +20,19 @@ public class FullMachine
     [Fact]
     public void eachRotorBeforeTurnover_incrementTwice_doubleStepping()
     {
-        _rotorOne.RotorPosition = _rotorOne.TurnoverPositions[0] - 1;
-        _rotorTwo.RotorPosition = _rotorTwo.TurnoverPositions[0] - 1;
-        _rotorThree.RotorPosition = _rotorThree.TurnoverPositions[0] - 1;
+        _rotorOne.TurnoverChars = new []{'B'};
+        _rotorTwo.TurnoverChars = new []{'B'};
+        _rotorThree.TurnoverChars = new []{'B'};
+        _rotorOne.RotorPosition = 0;
+        _rotorTwo.RotorPosition = 0;
+        _rotorThree.RotorPosition = 0;
 
         SetupEnigmaMachine();
         
         _enigmaMachine!.Encrypt("AAA");
         
-        Assert.Equal(_rotorOne.TurnoverPositions[0], _rotorOne.RotorPosition);
-        Assert.Equal(_rotorTwo.TurnoverPositions[0] + 1, _rotorTwo.RotorPosition);
-        Assert.Equal(_rotorThree.TurnoverPositions[0] + 1, _rotorThree.RotorPosition);
+        Assert.Equal(1, _rotorOne.RotorPosition);
+        Assert.Equal(2, _rotorTwo.RotorPosition);
+        Assert.Equal(3, _rotorThree.RotorPosition);
     }
 }

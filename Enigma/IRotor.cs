@@ -3,7 +3,7 @@ namespace Enigma;
 public interface IRotor
 {
 	int RotorPosition { get; set; }
-	int[] TurnoverPositions { get; set; }
+	char[] TurnoverChars { get; set; }
     
 	void Turn(int turnAmount);
 

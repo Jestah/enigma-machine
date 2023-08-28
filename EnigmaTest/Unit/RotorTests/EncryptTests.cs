@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Enigma;
 
 namespace EnigmaTest.Unit.RotorTests;
@@ -5,7 +6,7 @@ namespace EnigmaTest.Unit.RotorTests;
 public class EncryptTests
 {
     private static readonly Rotor Rotor = EncryptionDiscFactory.CreateRotorOneEncryptionDisc();
-    private static readonly Dictionary<char, char>.KeyCollection? RotorDomain = Rotor.EncryptionMapping.Keys;
+    private static readonly HashSet<char> RotorDomain = Rotor.EncryptionMapping.Select(m => m.Item1).ToHashSet();
     
     
     [Theory]

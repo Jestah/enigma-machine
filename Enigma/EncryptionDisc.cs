@@ -2,31 +2,40 @@ namespace Enigma;
 
 public class EncryptionDisc : IEncryptionDisc
 {
-    public Dictionary<char, char> EncryptionMapping { get; }
-    public Dictionary<char, char> ReverseEncryptionMapping { get; }
+    public List<Tuple<char, char>> EncryptionMapping { get; }
     public int DiscSize { get; }
 
-    public EncryptionDisc(Dictionary<char, char> mapping)
+    public EncryptionDisc(List<Tuple<char, char>> mapping)
     {
         EncryptionMapping = mapping;
-        ReverseEncryptionMapping = mapping.ToDictionary((i) => i.Value, (i) => i.Key);
         DiscSize = mapping.Count;
     }
     
     public virtual char Encrypt(char inputChar)
     {
-        return CaseInsensitiveMapping(EncryptionMapping, inputChar);
+        var mappingTuple = EncryptionMapping.Find(m => m.Item1 == char.ToUpper(inputChar));
+
+        if (mappingTuple == null)
+        {
+            throw new ArgumentNullException("EncryptionMapping.Find(m => m.Item1 == char.ToUpper(inputChar)");
+        }
+
+        var shift = mappingTuple.Item2 - mappingTuple.Item1;
+
+        return (char)(inputChar + shift);    
     }
     
     public virtual char Decrypt(char inputChar)
     {
-        return CaseInsensitiveMapping(ReverseEncryptionMapping, inputChar);
-    }
+        var mappingTuple = EncryptionMapping.Find(m => m.Item2 == char.ToUpper(inputChar));
 
-    private static char CaseInsensitiveMapping(IReadOnlyDictionary<char, char> mapping, char inputChar)
-    {
-        var upperInputChar = char.ToUpper(inputChar);
-        var charMappingDistance =  mapping[upperInputChar] - upperInputChar;
-        return (char) (inputChar + charMappingDistance);
+        if (mappingTuple == null)
+        {
+            throw new ArgumentNullException("EncryptionMapping.Find(m => m.Item2 == char.ToUpper(inputChar)");
+        }
+
+        var shift = mappingTuple.Item1 - mappingTuple.Item2;
+
+        return (char)(inputChar + shift);
     }
 }

@@ -5,7 +5,8 @@ namespace EnigmaTest.Unit.EncryptionDiscTests;
 public class EncryptionTest
 {
     private static readonly EncryptionDisc Disc = EncryptionDiscFactory.CreateRotorOneEncryptionDisc();
-    private static readonly Dictionary<char, char>.KeyCollection? DiscDomain = Disc.EncryptionMapping.Keys;
+    private static readonly HashSet<char> DiscDomain = Disc.EncryptionMapping.Select(m => m.Item1).ToHashSet();
+
     
     
     [Theory]

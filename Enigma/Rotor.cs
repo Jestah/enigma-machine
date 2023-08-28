@@ -2,20 +2,15 @@ namespace Enigma;
 
 public class Rotor : EncryptionDisc, IRotor
 {
-    public int RotorPosition { get; set; } = 'A' - 'A';
+    public int RotorPosition { get; set; } = 0;
 
-    public int[] TurnoverPositions { get; set; } = new int[] { 'Z' };
+    public char[] TurnoverChars { get; set; } = new char[] { 'Z' };
 
-    private int GetRotorOffset()
-    {
-        return RotorPosition - 'A';
-    }
-
-    public Rotor(Dictionary<char, char> mapping) : base(mapping){}
+    public Rotor(List<Tuple<char,char>> mapping) : base(mapping){}
     
-    public Rotor(Dictionary<char, char> mapping, int[] turnoverPositions) : base(mapping)
+    public Rotor(List<Tuple<char,char>> mapping, char[] turnoverChars) : base(mapping)
     {
-        TurnoverPositions = turnoverPositions;
+        TurnoverChars = turnoverChars;
     }
     
     public void Turn(int turnAmount)
@@ -23,22 +18,20 @@ public class Rotor : EncryptionDisc, IRotor
         if (turnAmount <= 0) throw new ArgumentOutOfRangeException(nameof(turnAmount));
         
         this.RotorPosition = (this.RotorPosition + turnAmount) % this.DiscSize;
-
-        if (RotorPosition > 'Z') RotorPosition -= 'A';
     }
 
     public override char Encrypt(char inputChar)
     {
-        return (char)(base.Encrypt((char)(inputChar + GetRotorOffset())));
+        return base.Encrypt((char)(inputChar + RotorPosition));
     }
 
     public override char Decrypt(char inputChar)
     {
-        return (char)(base.Decrypt((char)(inputChar + GetRotorOffset())));
+        return base.Decrypt((char)(inputChar + RotorPosition));
     }
 
     public bool IsNotchAligned()
     {
-        return TurnoverPositions.Contains(RotorPosition);
+        return TurnoverChars.Contains(EncryptionMapping[this.RotorPosition].Item1);
     }
 }

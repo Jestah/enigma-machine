@@ -2,8 +2,7 @@ namespace Enigma;
 
 public interface IEncryptionDisc
 {
-	Dictionary<char, char> EncryptionMapping { get; }
-	Dictionary<char, char> ReverseEncryptionMapping { get; }
+	List<Tuple<char, char>> EncryptionMapping { get; }
 	int DiscSize { get; }
 
 	/// <summary>
