@@ -3,7 +3,7 @@ namespace Enigma;
 public interface IEncryptionDisc
 {
 	List<Tuple<char, char>> EncryptionMapping { get; }
-	int DiscSize { get; }
+	public int DiscSize { get; }
 
 	/// <summary>
 	/// Encrypts a character.

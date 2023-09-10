@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace Enigma;
 
 public class EnigmaMachine
@@ -22,7 +24,14 @@ public class EnigmaMachine
         
         for (var i = 0; i < chars.Length; i++)
         {
-            chars[i] = Encrypt(chars[i]);
+            try
+            {
+                chars[i] = Encrypt(chars[i]);
+            }
+            catch
+            {
+                // ignored so that any char that can't be encrypted just stays the same.
+            }
         }
 
         return new string(chars);
@@ -81,6 +90,47 @@ public class EnigmaMachine
                     rotorHasTurned[rotorIndex + 1] = true;
                 }
             }
+        }
+    }
+
+    public IEnumerable GetRotorPositions()
+    {
+        return _rotors.Select(r => r.RotorPosition).ToList();
+    }
+
+    public void SetRotorPositions(int[] rotorPositions)
+    {
+        if (rotorPositions.Length != _rotors.Length)
+        {
+            throw new ArgumentException(
+                $"Expected {_rotors.Length} rotor positions. Only received {rotorPositions.Length}");
+        }
+
+        ValidateRotorPositions(rotorPositions);
+        
+        for (var i = 0; i < rotorPositions.Length; i++)
+        {
+            _rotors[i].RotorPosition = rotorPositions[i];
+        }
+    }
+
+    private void ValidateRotorPositions(int[] rotorPositions)
+    {
+        var rotorBounds = new List<int>();
+        var rotorsOutOfBounds = new List<int>();
+        for (int i = 0; i < rotorPositions.Length; i++)
+        {
+            if (rotorPositions[i] >= _rotors[i].DiscSize)
+            {
+                rotorsOutOfBounds.Add(i + 1);
+                rotorBounds.Add(_rotors[i].DiscSize);
+            }
+        }
+
+        if (rotorsOutOfBounds.Count > 0)
+        {
+            throw new ArgumentException(
+                $"Rotor position(s) {string.Join(", ", rotorsOutOfBounds)} too large. Must be smaller than the size of the encryption disc.");
         }
     }
 }

@@ -1,15 +1,15 @@
 using Enigma;
-using Moq;
+using NSubstitute;
 
 namespace EnigmaTest.Unit.EnigmaMachineTest;
 
 public class EncryptTest
 {
-    private readonly Mock<IEncryptionDisc> _mockEtw = new();
-    private readonly Mock<IEncryptionDisc> _mockUkw = new();
-    private readonly Mock<IRotor> _mockRotorOne = new();
-    private readonly Mock<IRotor> _mockRotorTwo = new();
-    private readonly Mock<IRotor> _mockRotorThree = new();
+    private readonly IEncryptionDisc _mockEtw = Substitute.For<IEncryptionDisc>();
+    private readonly IEncryptionDisc _mockUkw = Substitute.For<IEncryptionDisc>();
+    private readonly IRotor _mockRotorOne = Substitute.For<IRotor>();
+    private readonly IRotor _mockRotorTwo = Substitute.For<IRotor>();
+    private readonly IRotor _mockRotorThree = Substitute.For<IRotor>();
 
     private EnigmaMachine? _enigmaMachine;
 
@@ -21,27 +21,26 @@ public class EncryptTest
         
         _enigmaMachine!.Encrypt('A');
         
-        _mockRotorThree.Verify(rotor => rotor.Turn(1), Times.Once);
+        _mockRotorThree.Received(1).Turn(1);
     }
 
     
     [Fact]
     public void encrypt_rollover_turnNextRotor()
     {
-        _mockRotorThree.Setup(m => m.IsNotchAligned())
-            .Returns(true);
+        _mockRotorThree.IsNotchAligned().Returns(true);
         SetupEnigmaMachine();
 
         _enigmaMachine!.Encrypt('A');
         
-        _mockRotorTwo.Verify(m => m.Turn(1), Times.Once);
+        _mockRotorThree.Received(1).Turn(1);
 
     }
     
     
     private void SetupEnigmaMachine()
     {
-        _enigmaMachine = new EnigmaMachine(_mockEtw.Object, _mockUkw.Object, _mockRotorOne.Object, _mockRotorTwo.Object, _mockRotorThree.Object);
+        _enigmaMachine = new EnigmaMachine(_mockEtw, _mockUkw, _mockRotorOne, _mockRotorTwo, _mockRotorThree);
     }
     
     

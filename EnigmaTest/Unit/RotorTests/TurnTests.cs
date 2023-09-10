@@ -1,5 +1,4 @@
 using Enigma;
-using Moq;
 
 namespace EnigmaTest.RotorTests;
 

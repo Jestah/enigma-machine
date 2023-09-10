@@ -38,4 +38,9 @@ public class EncryptionDisc : IEncryptionDisc
 
         return (char)(inputChar + shift);
     }
+
+    public int Size()
+    {
+        return EncryptionMapping.Count;
+    }
 }
