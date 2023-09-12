@@ -23,6 +23,6 @@ public class DecryptTests
     
     private static void ResetRotorPosition(IRotor rotor)
     {
-        rotor.RotorPosition = 0;
+        rotor.RotorPosition = 4;
     }
 }
