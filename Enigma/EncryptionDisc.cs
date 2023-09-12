@@ -17,7 +17,7 @@ public class EncryptionDisc : IEncryptionDisc
 
         if (mappingTuple == null)
         {
-            throw new ArgumentNullException("EncryptionMapping.Find(m => m.Item1 == char.ToUpper(inputChar)");
+            return inputChar;
         }
 
         var shift = mappingTuple.Item2 - mappingTuple.Item1;
@@ -31,7 +31,7 @@ public class EncryptionDisc : IEncryptionDisc
 
         if (mappingTuple == null)
         {
-            throw new ArgumentNullException("EncryptionMapping.Find(m => m.Item2 == char.ToUpper(inputChar)");
+            return inputChar;
         }
 
         var shift = mappingTuple.Item1 - mappingTuple.Item2;

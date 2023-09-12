@@ -22,9 +22,11 @@ public class EncryptionTest
     [InlineData('$')]
     [InlineData(' ')]
     [InlineData('`')]
-    public void charNotInDiscMapping_encrypt_throwsException(char inputChar)
+    public void charNotInDiscMapping_encrypt_sameAsInputChar(char inputChar)
     {
-        Assert.ThrowsAny<Exception>(() => Disc.Encrypt(inputChar));
+        var result = Disc.Encrypt(inputChar);
+        
+        Assert.Equal(inputChar, result);
     }
     
     

@@ -24,7 +24,7 @@ public class Rotor : EncryptionDisc, IRotor
     {
         if (!EncryptionMapping.Select(tuple => tuple.Item1).Contains(char.ToUpper(inputChar)))
         {
-            throw new ArgumentException("Input char not in encryption mapping");
+            return inputChar;
         }
         
         var isLower = char.IsLower(inputChar);
@@ -39,7 +39,7 @@ public class Rotor : EncryptionDisc, IRotor
     {
         if (!EncryptionMapping.Select(tuple => tuple.Item2).Contains(char.ToUpper(inputChar)))
         {
-            throw new ArgumentException("Input char not in encryption mapping");
+            return inputChar;
         }
         
         var isLower = char.IsLower(inputChar);
