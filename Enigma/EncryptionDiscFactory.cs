@@ -1,6 +1,6 @@
 namespace Enigma;
 
-public class EncryptionDiscFactory
+public static class EncryptionDiscFactory
 {
     public static EncryptionDisc CreateEtwEncryptionDisc()
     {
@@ -68,7 +68,7 @@ public class EncryptionDiscFactory
             new('Z', 'W'),
         };
 
-        var turnoverChars = new char[] { 'Y' };
+        var turnoverChars = new[] { 'Y' };
 
         return new Rotor(mapping, turnoverChars);
     }
@@ -105,7 +105,7 @@ public class EncryptionDiscFactory
             new('Z', 'U'),
         };
 
-        var turnoverChars = new char[] { 'E' };
+        var turnoverChars = new[] { 'E' };
 
         return new Rotor(mapping, turnoverChars);
     }    
@@ -142,7 +142,7 @@ public class EncryptionDiscFactory
             new('Z', 'E'),
         };
 
-        var turnoverChars = new char[] { 'N' };
+        var turnoverChars = new[] { 'N' };
 
         return new Rotor(mapping, turnoverChars);
     }

@@ -13,8 +13,6 @@ public class EncryptTests
     [MemberData(nameof(GetRotorDomain))]
     public void encryptUpper_resultInUpperMappingDomain(char inputChar)
     {
-        // if (RotorDomain == null) Assert.Fail("Rotor domain is null.");
-
         var encrypted = Rotor.Encrypt(inputChar);
         
         Assert.Contains(encrypted, RotorDomain);
@@ -26,7 +24,6 @@ public class EncryptTests
     {
         // set rotor positions so that rotor encryption works even when rotor is not at base positions
         Rotor.RotorPosition = RotorDomain.Count - 1;
-        if (RotorDomain == null) Assert.Fail("Rotor domain is null.");
         
         var encrypted = Rotor.Encrypt(inputChar);
         

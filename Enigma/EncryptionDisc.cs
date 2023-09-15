@@ -1,11 +1,13 @@
+using System.Globalization;
+
 namespace Enigma;
 
 public class EncryptionDisc : IEncryptionDisc
 {
-    public List<Tuple<char, char>> EncryptionMapping { get; }
+    public ICollection<Tuple<char, char>> EncryptionMapping { get; }
     public int DiscSize { get; }
 
-    public EncryptionDisc(List<Tuple<char, char>> mapping)
+    public EncryptionDisc(ICollection<Tuple<char, char>> mapping)
     {
         EncryptionMapping = mapping;
         DiscSize = mapping.Count;
@@ -13,7 +15,7 @@ public class EncryptionDisc : IEncryptionDisc
     
     public virtual char Encrypt(char inputChar)
     {
-        var mappingTuple = EncryptionMapping.Find(m => m.Item1 == char.ToUpper(inputChar));
+        var mappingTuple = EncryptionMapping.FirstOrDefault(m => m.Item1 == char.ToUpper(inputChar, CultureInfo.CurrentCulture));
 
         if (mappingTuple == null)
         {
@@ -27,7 +29,7 @@ public class EncryptionDisc : IEncryptionDisc
     
     public virtual char Decrypt(char inputChar)
     {
-        var mappingTuple = EncryptionMapping.Find(m => m.Item2 == char.ToUpper(inputChar));
+        var mappingTuple = EncryptionMapping.FirstOrDefault(m => m.Item2 == char.ToUpper(inputChar, CultureInfo.CurrentCulture));
 
         if (mappingTuple == null)
         {

@@ -26,8 +26,7 @@ public class Rotor : EncryptionDisc, IRotor
         {
             return inputChar;
         }
-        
-        var isLower = char.IsLower(inputChar);
+
         var mappingIndex = EncryptionMapping.Select(tuple => tuple.Item1).ToList().IndexOf(char.ToUpper(inputChar));
         var rotationAdjustedMappingTuple = EncryptionMapping[Util.Mod(mappingIndex + RotorPosition, EncryptionMapping.Count)];
         var outcomeIndex = EncryptionMapping.Select(tuple => tuple.Item1).ToList().IndexOf(rotationAdjustedMappingTuple.Item2);
@@ -41,8 +40,7 @@ public class Rotor : EncryptionDisc, IRotor
         {
             return inputChar;
         }
-        
-        var isLower = char.IsLower(inputChar);
+
         var mappingIndex = EncryptionMapping.Select(tuple => tuple.Item1).ToList().IndexOf(char.ToUpper(inputChar));
         var rotationAdjustedChar =
             EncryptionMapping[Util.Mod(mappingIndex + RotorPosition, EncryptionMapping.Count)].Item1;

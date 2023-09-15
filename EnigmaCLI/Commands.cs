@@ -7,7 +7,7 @@ namespace EnigmaCLI;
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public class Commands {
     public bool Exiting { get; private set; }
-    private EnigmaMachine _enigmaMachine;
+    private readonly EnigmaMachine _enigmaMachine;
 
     public Commands(EnigmaMachine enigmaMachine)
     {

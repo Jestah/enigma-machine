@@ -47,14 +47,14 @@ public class EnigmaMachine
 
         for (var i = _rotors.GetUpperBound(0); i >= 0; i--)
         {
-            charOut = _rotors[i].Encrypt(charOut);
+            charOut = _rotors[i]!.Encrypt(charOut);
         }
 
         charOut = _ukw.Encrypt(charOut);
 
         for (var i = 0; i <= _rotors.GetUpperBound(0); i++)
         {
-            charOut = _rotors[i].Decrypt(charOut);
+            charOut = _rotors[i]!.Decrypt(charOut);
         }
 
         charOut = _etw.Decrypt(charOut);
@@ -86,7 +86,7 @@ public class EnigmaMachine
                 
                 if (!rotorHasTurned[rotorIndex + 1])
                 {
-                    previousRotor!.Turn(1);
+                    previousRotor.Turn(1);
                     rotorHasTurned[rotorIndex + 1] = true;
                 }
             }
@@ -95,42 +95,37 @@ public class EnigmaMachine
 
     public IEnumerable GetRotorPositions()
     {
-        return _rotors.Select(r => r.RotorPosition).ToList();
+        return _rotors.Select(r => r!.RotorPosition).ToList();
     }
 
     public void SetRotorPositions(int[] rotorPositions)
     {
         if (rotorPositions.Length != _rotors.Length)
         {
-            throw new ArgumentException(
-                $"Expected {_rotors.Length} rotor positions. Only received {rotorPositions.Length}");
+            throw new ArgumentException($"Expected {_rotors.Length} rotor positions. Only received {rotorPositions.Length}", nameof(rotorPositions));
         }
 
         ValidateRotorPositions(rotorPositions);
         
         for (var i = 0; i < rotorPositions.Length; i++)
         {
-            _rotors[i].RotorPosition = rotorPositions[i];
+            _rotors[i]!.RotorPosition = rotorPositions[i];
         }
     }
 
     private void ValidateRotorPositions(int[] rotorPositions)
     {
-        var rotorBounds = new List<int>();
         var rotorsOutOfBounds = new List<int>();
-        for (int i = 0; i < rotorPositions.Length; i++)
+        for (var i = 0; i < rotorPositions.Length; i++)
         {
-            if (rotorPositions[i] >= _rotors[i].DiscSize)
-            {
-                rotorsOutOfBounds.Add(i + 1);
-                rotorBounds.Add(_rotors[i].DiscSize);
-            }
+            if (rotorPositions[i] < _rotors[i]!.DiscSize) continue;
+            rotorsOutOfBounds.Add(i + 1);
         }
 
         if (rotorsOutOfBounds.Count > 0)
         {
             throw new ArgumentException(
-                $"Rotor position(s) {string.Join(", ", rotorsOutOfBounds)} too large. Must be smaller than the size of the encryption disc.");
+                $"Rotor position(s) {string.Join(", ", rotorsOutOfBounds)} too large. Must be smaller than the size of the encryption disc.", nameof(rotorPositions));
         }
     }
 }
