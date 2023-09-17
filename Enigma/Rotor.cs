@@ -6,9 +6,9 @@ public class Rotor : EncryptionDisc, IRotor
 
     public char[] TurnoverChars { get; set; } = { 'Z' };
 
-    public Rotor(List<Tuple<char,char>> mapping) : base(mapping){}
+    public Rotor(IList<Tuple<char,char>> mapping) : base(mapping){}
     
-    public Rotor(List<Tuple<char,char>> mapping, char[] turnoverChars) : base(mapping)
+    public Rotor(IList<Tuple<char,char>> mapping, char[] turnoverChars) : base(mapping)
     {
         TurnoverChars = turnoverChars;
     }

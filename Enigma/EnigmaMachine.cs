@@ -4,7 +4,7 @@ namespace Enigma;
 
 public class EnigmaMachine
 {
-    private readonly IRotor?[] _rotors;
+    private readonly IList<IRotor> _rotors;
     private readonly IEncryptionDisc _etw;
     private readonly IEncryptionDisc _ukw;
 
@@ -39,20 +39,20 @@ public class EnigmaMachine
 
     public char Encrypt(char inputChar)
     {
-        Increment();
+        IncrementRotors();
         
         var charOut = inputChar;
 
         charOut = _etw.Encrypt(charOut);
 
-        for (var i = _rotors.GetUpperBound(0); i >= 0; i--)
+        for (var i = _rotors.Count-1; i >= 0; i--)
         {
             charOut = _rotors[i]!.Encrypt(charOut);
         }
 
         charOut = _ukw.Encrypt(charOut);
 
-        for (var i = 0; i <= _rotors.GetUpperBound(0); i++)
+        for (var i = 0; i <= _rotors.Count-1; i++)
         {
             charOut = _rotors[i]!.Decrypt(charOut);
         }
@@ -62,35 +62,40 @@ public class EnigmaMachine
         return charOut;
     }
 
-    private void Increment()
+    private void IncrementRotors()
     {
-        var rotorHasTurned = new bool[_rotors.Length];
+        var rotorHasTurned = new bool[_rotors.Count];
 
-        for (var rotorIndex = _rotors.GetUpperBound(0); rotorIndex >= 0; rotorIndex--)
+        for (var rotorIndex = 0; rotorIndex < _rotors.Count; rotorIndex++)
         {
-            var isFirstRotor = rotorIndex == _rotors.GetUpperBound(0);
-            var currentRotor = _rotors[rotorIndex];
-            IRotor? previousRotor = null;
-
-            if (!isFirstRotor) previousRotor = _rotors[rotorIndex + 1];
-
-            if (isFirstRotor && !rotorHasTurned[rotorIndex])
+            var rotor = _rotors[rotorIndex];
+            
+            if (!rotorHasTurned[rotorIndex] && ShouldTurnOnIncrement(rotor, rotorHasTurned))
             {
-                currentRotor!.Turn(1);
+                rotor!.Turn(1);
                 rotorHasTurned[rotorIndex] = true;
             }
-            
-            if (previousRotor != null && previousRotor.IsNotchAligned())
-            {
-                currentRotor?.Turn(1);
-                
-                if (!rotorHasTurned[rotorIndex + 1])
-                {
-                    previousRotor.Turn(1);
-                    rotorHasTurned[rotorIndex + 1] = true;
-                }
-            }
         }
+    }
+
+    private bool ShouldTurnOnIncrement(IRotor rotor, bool[] rotorHasTurned)
+    {
+        var rotorIndex = _rotors.IndexOf(rotor);
+        var isFirstRotor = rotorIndex == _rotors.Count-1;
+        var isLastRotor = rotorIndex ==0;
+        IRotor? previousRotor = null;
+        bool doubleStepRotor = false;
+
+        if (isFirstRotor)
+        {
+            return true;
+        }
+
+        previousRotor = _rotors[rotorIndex + 1];
+
+        if (!isLastRotor) doubleStepRotor = rotorHasTurned[rotorIndex - 1];
+        
+        return doubleStepRotor || previousRotor.IsNotchAligned();
     }
 
     public IEnumerable GetRotorPositions()
@@ -100,9 +105,9 @@ public class EnigmaMachine
 
     public void SetRotorPositions(int[] rotorPositions)
     {
-        if (rotorPositions.Length != _rotors.Length)
+        if (rotorPositions.Length != _rotors.Count)
         {
-            throw new ArgumentException($"Expected {_rotors.Length} rotor positions. Only received {rotorPositions.Length}", nameof(rotorPositions));
+            throw new ArgumentException($"Expected {_rotors.Count} rotor positions. Only received {rotorPositions.Length}", nameof(rotorPositions));
         }
 
         ValidateRotorPositions(rotorPositions);

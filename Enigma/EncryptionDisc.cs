@@ -4,10 +4,10 @@ namespace Enigma;
 
 public class EncryptionDisc : IEncryptionDisc
 {
-    public ICollection<Tuple<char, char>> EncryptionMapping { get; }
+    public IList<Tuple<char, char>> EncryptionMapping { get; }
     public int DiscSize { get; }
 
-    public EncryptionDisc(ICollection<Tuple<char, char>> mapping)
+    public EncryptionDisc(IList<Tuple<char, char>> mapping)
     {
         EncryptionMapping = mapping;
         DiscSize = mapping.Count;

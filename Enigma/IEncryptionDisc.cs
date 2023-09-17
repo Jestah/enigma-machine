@@ -2,7 +2,7 @@ namespace Enigma;
 
 public interface IEncryptionDisc
 {
-	ICollection<Tuple<char, char>> EncryptionMapping { get; }
+	IList<Tuple<char, char>> EncryptionMapping { get; }
 	public int DiscSize { get; }
 
 	/// <summary>
