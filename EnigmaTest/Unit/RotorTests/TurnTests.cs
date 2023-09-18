@@ -1,6 +1,6 @@
 using Enigma;
 
-namespace EnigmaTest.RotorTests;
+namespace EnigmaTest.Unit.RotorTests;
 
 public class TurnTests
 {

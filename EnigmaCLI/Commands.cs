@@ -1,12 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
+using System.Globalization;
 using Enigma;
 
 namespace EnigmaCLI;
 
 [SuppressMessage("ReSharper", "InconsistentNaming")]
-public class Commands {
-    public bool Exiting { get; private set; }
+public class Commands
+{
     private readonly EnigmaMachine _enigmaMachine;
 
     public Commands(EnigmaMachine enigmaMachine)
@@ -15,7 +15,10 @@ public class Commands {
         _enigmaMachine = enigmaMachine;
     }
 
-    public void exit() {
+    public bool Exiting { get; private set; }
+
+    public void exit()
+    {
         Exiting = true;
     }
 
@@ -23,28 +26,28 @@ public class Commands {
     {
         return "The encrypted string is: " + _enigmaMachine.Encrypt(string.Join(string.Empty, inputString));
     }
-    
+
     public string decrypt(string[] inputString)
     {
         return "The decrypted string is: " + _enigmaMachine.Encrypt(string.Join(string.Empty, inputString));
     }
-    
+
     public string setpositions(string[] positions)
     {
         /*
          * try to convert string positions into int positions.
          * return an error message if error
          */
-        
+
         try
         {
             var rotorPositions = new int[positions.Length];
 
             for (int i = 0; i < positions.Length; i++)
             {
-                rotorPositions[i] = int.Parse(positions[i]);
+                rotorPositions[i] = int.Parse(positions[i], new NumberFormatInfo());
             }
-            
+
             _enigmaMachine.SetRotorPositions(rotorPositions);
 
             return "Rotor positions updated. The new positions are:";
@@ -53,15 +56,16 @@ public class Commands {
         {
             return e.Message;
         }
-        
     }
 
-    public bool TryInvokeMember(string methodName, object[] args) {
-        var method = typeof(Commands).GetMethod(methodName.ToLower());
+    public bool TryInvokeMember(string methodName, string[] args)
+    {
+        var method = typeof(Commands).GetMethod(methodName.ToLower(CultureInfo.CurrentCulture));
 
-        if (method != null) {
+        if (method != null)
+        {
             object? res;
-            
+
             if (method.GetParameters().Length > 0)
                 res = method.Invoke(this, new object[] { args });
             else
@@ -75,6 +79,4 @@ public class Commands {
 
         return false;
     }
-
-    
 }
