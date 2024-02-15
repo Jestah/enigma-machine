@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma", "Enigma\Enigma.csproj", "{317280FD-4A8D-422C-B558-DBB55B465325}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnigmaTest", "EnigmaTest\EnigmaTest.csproj", "{652391B9-929F-4F80-BFE4-701B454181E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnigmaCLI", "EnigmaCLI\EnigmaCLI.csproj", "{74DEB6BD-CE1A-4884-9CC3-02FCCD5B04D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{317280FD-4A8D-422C-B558-DBB55B465325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{317280FD-4A8D-422C-B558-DBB55B465325}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{317280FD-4A8D-422C-B558-DBB55B465325}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{317280FD-4A8D-422C-B558-DBB55B465325}.Release|Any CPU.Build.0 = Release|Any CPU
+		{652391B9-929F-4F80-BFE4-701B454181E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{652391B9-929F-4F80-BFE4-701B454181E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{652391B9-929F-4F80-BFE4-701B454181E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{652391B9-929F-4F80-BFE4-701B454181E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74DEB6BD-CE1A-4884-9CC3-02FCCD5B04D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74DEB6BD-CE1A-4884-9CC3-02FCCD5B04D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74DEB6BD-CE1A-4884-9CC3-02FCCD5B04D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74DEB6BD-CE1A-4884-9CC3-02FCCD5B04D6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
